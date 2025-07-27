@@ -12,6 +12,15 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 async def on_ready():
     print(f'Logged in as {bot.user.name}')
 
+
+@bot.event
+async def on_member_join(member):
+    # Mengirim pesan ucapan selamat
+    for channel in member.guild.text_channels:
+        await channel.send(f'Selamat datang, {member.mention}!')
+
+
+
 @bot.event
 async def on_message(message):
     # Cegah bot merespons dirinya sendiri
