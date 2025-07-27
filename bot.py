@@ -12,6 +12,34 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 async def on_ready():
     print(f'Logged in as {bot.user.name}')
 
+@bot.event
+async def on_message(message):
+    # Cegah bot merespons dirinya sendiri
+    if message.author == bot.user:
+        return
+
+    # Deteksi link dalam pesan
+    if "https://" in message.content:
+        try:
+            # Menyimpan data user ke log
+            print(f"[LOG] Pengguna melanggar: {message.author} (ID: {message.author.id})")
+
+            # Kirim pesan sebelum ban (opsional)
+            await message.channel.send(f"🚫 {message.author.mention} telah diblokir karena mengirim tautan!")
+
+            # Ban user
+            await message.guild.ban(message.author, reason="Mengirim tautan tanpa izin.")
+
+        except Exception as e:
+            print(f"Terjadi kesalahan saat memblokir: {e}")
+
+    # Jangan lupa: kalau pakai on_message, perintah (command) tidak akan diproses
+    await bot.process_commands(message)
+
+
+
+
+
 @bot.command()
 async def start(ctx):
     await ctx.send("Hi! I'm a chat manager bot!")

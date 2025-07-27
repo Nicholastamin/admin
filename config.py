@@ -1,1 +1,1 @@
-token = "Insert your bot's token here"
+token = "k"
